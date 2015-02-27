@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/huonw/python_mixin.png)](https://travis-ci.org/huonw/python_mixin)
 
+**Deprecated in favour of [`external_mixin`](https://github.com/huonw/external_mixin)**
+
 Write Python code to emit Rust code right in your crate.
 
 ```rust
