@@ -69,21 +69,17 @@ impl base::TTMacroExpander for Expander {
             _ => (raw_tts, &[])
         };
 
-        if tts.is_empty() {
-            return base::DummyResult::any(sp);
-        }
-
         let opts = Options::parse(cx, option_tts);
-
-        let lo = tts[0].get_span().lo;
-        let hi = tts.last().unwrap().get_span().hi;
-        let code_span = codemap::mk_sp(lo, hi);
 
         let code = match base::get_single_str_from_tts(cx, sp, tts, "`python_mixin!`") {
             Some(c) => c,
             None => return base::DummyResult::any(sp)
         };
-        let filename = cx.codemap().span_to_filename(code_span);
+
+        let lo = tts[0].get_span().lo;
+        let first_line = cx.codemap().lookup_char_pos(lo).line as u64;
+
+        let filename = cx.codemap().span_to_filename(sp);
         let path = PathBuf::new(&filename);
         let name = if path.is_absolute() {
             Path::new(path.file_name().unwrap())
@@ -100,8 +96,6 @@ impl base::TTMacroExpander for Expander {
         let file = mac_try!(File::create(&python_file),
                             e => "`python_mixin!` could not create temporary file: {}", e);
         let mut file = io::BufWriter::new(file);
-
-        let first_line = cx.codemap().lookup_char_pos(code_span.lo).line as u64;
 
         mac_try!(io::copy(&mut io::repeat(b'\n').take(first_line - 1), &mut file),
                  e => "`python_mixin!` could not write output: {}", e);
@@ -162,14 +156,22 @@ impl Options {
         while p.token != token::Eof {
             // <name> = "..."
             let ident = p.parse_ident();
+            let ident_span = p.last_span;
             match ident.as_str() {
                 "version" => {
                     p.expect(&token::Eq);
                     let (s, _) = p.parse_str();
-                    version.set(s.to_string());
+                    let span = codemap::mk_sp(ident_span.lo, p.last_span.hi);
+
+                    if let Err(&(_, older_span)) = version.set((s.to_string(), span)) {
+                        cx.span_err(span,
+                                    &format!("`python_mixin!`: option `version` already set"));
+                        cx.span_note(older_span,
+                                     "set here");
+                    }
                 }
                 s => {
-                    cx.span_err(p.last_span, &format!("unknown option `{}` for `python_mixin!`",
+                    cx.span_err(p.last_span, &format!("`python_mixing!`: unknown option `{}`",
                                                       s));
                     // heuristically skip forward, so we can check
                     // more things later.
@@ -183,7 +185,7 @@ impl Options {
         }
 
         Options {
-            version: version.get().unwrap_or_else(|| DEFAULT_VERSION.to_string()),
+            version: version.get().map_or_else(|| DEFAULT_VERSION.to_string(), |t| t.0),
         }
     }
 }
