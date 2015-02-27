@@ -1,0 +1,23 @@
+[package]
+
+name = "python_mixin"
+version = "0.0.1"
+authors = ["Huon Wilson <dbau.pp@gmail.com>"]
+
+homepage = "https://github.com/huonw/python_mixin"
+repository = "https://github.com/huonw/python_mixin"
+documentation = "https://github.com/huonw/python_mixin#python_mixin"
+license = "MIT/Apache-2.0"
+keywords = ["python", "plugin", "code-generation"]
+readme = "README.md"
+description = """
+Use Python to generate your Rust, right in your Rust.
+"""
+
+[dependencies]
+regex = "0"
+regex_macros = "0"
+
+[lib]
+name = "python_mixin"
+plugin = true
