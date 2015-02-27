@@ -41,9 +41,9 @@ Some downsides (not exhaustive):
   relevant part of the original string containing the source
   (including working with editors' jump-to-error facilities). The
   parsed Rust doesn't actually appear anywhere on disk or otherwise,
-  so you cannot easily the full context when the compiler complains
-  (in contrast, a build script just generates a normal file right in
-  your file-system).
+  so you cannot easily see the full context when the compiler
+  complains (in contrast, a build script just generates a normal file
+  right in your file-system).
 
 ## Installation
 
