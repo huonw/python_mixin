@@ -1,5 +1,7 @@
 # `python_mixin!`
 
+[![Build Status](https://travis-ci.org/huonw/python_mixin.png)](https://travis-ci.org/huonw/python_mixin)
+
 Write Python code to emit Rust code right in your crate.
 
 ```rust
