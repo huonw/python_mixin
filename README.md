@@ -138,8 +138,8 @@ fn main() {
 
 ### Options
 
-| name      | type   | default | |
-|-----------|--------|---------|-|
+| name      | type   | default |     |
+|-----------|--------|---------|-----|
 | `version` | string | `""`   | controls the version of Python used: `python_mixin!` tries to execute the `python{version}` binary. |
 
 (Maybe this table will get longer? Who knows. Tables are cool.)
