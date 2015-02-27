@@ -143,7 +143,7 @@ impl base::TTMacroExpander for Expander {
     }
 }
 
-const DEFAULT_VERSION: &'static str = "3";
+const DEFAULT_VERSION: &'static str = "";
 
 struct Options {
     version: String,
