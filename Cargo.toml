@@ -21,10 +21,6 @@ default = []
 # examples/failure.rs test
 compile_error = []
 
-[dependencies]
-regex = "0"
-regex_macros = "0"
-
 [lib]
 name = "python_mixin"
 plugin = true

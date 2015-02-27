@@ -1,9 +1,5 @@
-#![feature(quote, plugin_registrar, rustc_private, plugin)]
+#![feature(quote, plugin_registrar, rustc_private)]
 #![feature(tempdir, path, io, fs, process)]
-
-#![plugin(regex_macros)]
-
-extern crate regex;
 
 extern crate syntax;
 extern crate rustc;
